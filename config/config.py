@@ -3,7 +3,7 @@ Configuration settings for the backtesting application
 """
 
 # Default settings
-DEFAULT_TICKER = '^GSPC'  # S&P 500
+DEFAULT_TICKER = '^SPX'  # S&P 500
 DEFAULT_TIMEFRAMES = ['1h', '1d']
 DEFAULT_CASH = 10000
 DEFAULT_COMMISSION = 0.002

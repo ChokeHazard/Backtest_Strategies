@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import yfinance as yf
 
 def load_yahoo_finance(ticker, interval='1d', period='2y'):
@@ -20,12 +19,21 @@ def load_yahoo_finance(ticker, interval='1d', period='2y'):
     pd.DataFrame
         DataFrame with OHLCV data
     """
-    data = yf.download(ticker, interval=interval, period=period)
+    # Set group_by='ticker' to False to avoid having ticker as column names
+    data = yf.download(ticker, interval=interval, period=period, group_by='ticker', auto_adjust=True)
 
-    # Handle MultiIndex if present (happens with intraday data)
-    if isinstance(data.index, pd.MultiIndex):
-        # Convert MultiIndex to regular DatetimeIndex
-        data = data.reset_index(level=0, drop=True)
+    # Handle MultiIndex in columns (happens with intraday data)
+    if isinstance(data.columns, pd.MultiIndex):
+        # Convert MultiIndex columns to flat columns
+        data.columns = [col[1] for col in data.columns]
+
+    # Ensure we have the required columns for backtesting
+    required_columns = ['Open', 'High', 'Low', 'Close', 'Volume']
+    if not all(col in data.columns for col in required_columns):
+        # Try to rename columns if they have different names
+        if len(data.columns) >= 5:
+            # Assume the first 5 columns are OHLCV in that order
+            data.columns = required_columns[:len(data.columns)]
 
     # Ensure the index is a DatetimeIndex
     if not isinstance(data.index, pd.DatetimeIndex):
