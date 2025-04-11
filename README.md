@@ -20,6 +20,11 @@ backtest_strategies/
 └── tests/              # Unit tests
 ```
 
+## Requirements
+
+- Python 3.9 or higher
+- Dependencies as specified in pyproject.toml
+
 ## Getting Started
 
 ### Using uv (Recommended)
