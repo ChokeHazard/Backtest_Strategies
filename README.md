@@ -9,7 +9,10 @@ backtest_strategies/
 ├── config/             # Configuration files
 ├── main.py             # Main entry point
 ├── plots/              # Generated plots
+├── pyproject.toml      # Project metadata and dependencies
 ├── results/            # Backtest results
+├── setup_env.ps1       # Script to set up environment (Windows)
+├── setup_env.sh        # Script to set up environment (Unix)
 ├── src/                # Source code
 │   ├── data/           # Data loading modules
 │   ├── strategies/     # Trading strategies
@@ -19,12 +22,57 @@ backtest_strategies/
 
 ## Getting Started
 
-1. Install dependencies:
+### Using uv (Recommended)
+
+[uv](https://github.com/astral-sh/uv) is a fast Python package installer and resolver. To set up the project with uv:
+
+1. Install uv if you don't have it already:
 ```
-pip install -r requirements.txt
+pip install uv
 ```
 
-2. Run a backtest:
+2. Set up the environment using the provided script:
+
+On Windows:
+```
+.\setup_env.ps1
+```
+
+On Unix-based systems:
+```
+chmod +x setup_env.sh
+./setup_env.sh
+```
+
+3. Activate the virtual environment:
+
+On Windows:
+```
+.venv\Scripts\Activate.ps1
+```
+
+On Unix-based systems:
+```
+source .venv/bin/activate
+```
+
+### Using pip (Alternative)
+
+1. Create and activate a virtual environment:
+```
+python -m venv .venv
+.venv\Scripts\Activate.ps1  # Windows
+source .venv/bin/activate    # Unix
+```
+
+2. Install the package in development mode:
+```
+pip install -e .
+```
+
+### Running the Application
+
+Run a backtest:
 ```
 python main.py --ticker "^GSPC" --timeframes 1h 1d
 ```
