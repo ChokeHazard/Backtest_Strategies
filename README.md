@@ -72,7 +72,31 @@ pip install -e .
 
 ### Running the Application
 
-Run a backtest:
+#### Using uv run (Recommended)
+
+With uv, you can run the application without activating the virtual environment:
+
+```
+uv run python main.py --ticker "^GSPC" --timeframes 1h 1d
+```
+
+You can also use uv run to execute other Python scripts or commands:
+
+```
+# Run a specific script
+uv run python src/some_script.py
+
+# Run development tools
+uv run black src/
+uv run isort src/
+uv run flake8 src/
+uv run pytest
+```
+
+#### Using python directly
+
+If you've activated the virtual environment, you can also run the application directly:
+
 ```
 python main.py --ticker "^GSPC" --timeframes 1h 1d
 ```
@@ -96,3 +120,56 @@ The application currently supports loading data from:
 - Yahoo Finance (via yfinance)
 
 To add a new data source, implement a new loader function in the `src/data/` directory.
+
+## Development with uv
+
+### Managing Dependencies
+
+To add new dependencies to the project:
+
+```
+# Add a runtime dependency
+uv pip install package_name
+
+# Add a development dependency
+uv pip install package_name --dev
+```
+
+After adding dependencies, update the pyproject.toml file to include them:
+
+```toml
+# For runtime dependencies
+dependencies = [
+    # existing dependencies...
+    "package_name>=version",
+]
+
+# For development dependencies
+[project.optional-dependencies]
+dev = [
+    # existing dev dependencies...
+    "package_name>=version",
+]
+```
+
+### Updating Dependencies
+
+To update all dependencies to their latest versions:
+
+```
+uv pip sync --upgrade
+```
+
+To update a specific package:
+
+```
+uv pip install --upgrade package_name
+```
+
+### Exporting Dependencies
+
+To export the current environment's dependencies to a requirements.txt file:
+
+```
+uv pip freeze > requirements.txt
+```
